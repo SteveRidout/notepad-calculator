@@ -2,9 +2,17 @@
 
 This is a simple single page web-app with no back end allowing you to mix free-form text and calculations, along with the ability to use variables. The easiest way to understand is to [play around with it](http://notepadcalculator.com).
 
+## Storage of data
+
+Your calculations are stored within your brower's localStorage so that next time you open the calculator, it will contain your previous calculations.
+
 ## Inspiration
 
-OK, so this isn't the most original idea in the world. I heard about this app [Soulver](http://www.acqualia.com/soulver/) which sounded very cool, although at the time wasn't using OS-X so it wasn't available to me, so I made this instead. (I still haven't actually tried Soulver myself.)
+OK, so this isn't the most original idea in the world. A year or two ago I heard about [Soulver](http://www.acqualia.com/soulver/) and at the time wasn't using OS-X so it wasn't available to me, and I made this instead. (I still haven't tried Soulver.)
+
+## How I use it
+
+I now use it within [Fluid](http://fluidapp.com/), which creates a separate OS-X application just for this calculator, making it convienient to open using Spotlight instead of the default system calculator. The downside of this is that it doesn't retain the localStorage between sessions.
 
 ## Warning
 

@@ -10,7 +10,7 @@ $(document).ready(function () {
     rekommendIFrame.stop().animate({bottom: '-630px'});
   });
 
-	var defaultValue = 
+	var exampleCalculation = 
 		"Edit any of the following calculations,\n" +
 		"or delete them all and start from scratch!\n" +
 		"\n" +
@@ -135,7 +135,7 @@ $(document).ready(function () {
     // if no inital calculations - play the intro example...
 		$inputArea.val("");
 		$inputArea.attr('disabled', 'disabled');
-		initialString = defaultValue;
+		initialString = exampleCalculation;
 		var introPlaying = true;
 
 		var addCharacter = function (character) {

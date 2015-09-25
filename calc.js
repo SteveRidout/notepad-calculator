@@ -3,13 +3,6 @@
 $(document).ready(function () {
 	var $ = window.$;
 
-  var rekommendIFrame = $('#rekommend-iframe');
-  rekommendIFrame.hover(function () {
-    rekommendIFrame.stop().animate({bottom: '-235px'});
-  }, function () {
-    rekommendIFrame.stop().animate({bottom: '-630px'});
-  });
-
 	var exampleCalculation = 
 		"Edit any of the following calculations,\n" +
 		"or delete them all and start from scratch!\n" +

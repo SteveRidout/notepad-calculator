@@ -1,0 +1,77 @@
+body {
+  font-family: "Droid Sans Mono", Courier;
+  max-width: 700px;
+  margin: 0 auto;
+}
+p,
+h1 {
+  text-align: center;
+}
+.left {
+  display: inline-block;
+  box-sizing: border-box;
+  width: 70%;
+}
+.right {
+  display: inline-block;
+  box-sizing: border-box;
+  width: 30%;
+  vertical-align: top;
+}
+#inputArea {
+  background-color: transparent;
+  overflow: hidden;
+
+  border: 2px solid #8bd;
+
+  resize: none;
+}
+#outputArea {
+  padding-left: 20px;
+}
+#outputArea li {
+  white-space: nowrap;
+}
+#footer {
+  clear: both;
+}
+
+.matchingArea {
+  font-family: "Droid Sans Mono", Courier;
+  font-size: 16px;
+  line-height: 22px;
+
+  padding: 10px;
+  margin: 0;
+}
+.mainContainer {
+  position: relative;
+}
+ul {
+  list-style-type: none;
+}
+ul.backgroundRuler {
+  position: absolute;
+  width: 100%;
+  background-color: #fff;
+  margin: 0;
+
+  z-index: -1;
+}
+.backgroundRuler li {
+  line-height: 21px;
+  border-bottom: 1px solid #cce;
+  margin: 0;
+  padding: 0;
+}
+
+#footer {
+  padding: 25px 0 15px 0;
+  line-height: 1.5;
+}
+
+.changed {
+  color: #f66;
+  text-shadow: 0 0 5px #ff8;
+}
+

@@ -62,7 +62,7 @@ $(document).ready(function () {
 
 				if (line.length > 0) {
           // If the line starts with an operator (+, -, *, /), prepend the previous answer
-					if (binaryOperators[line[0]] && outputLines[previousAnswerIndex]) {
+					if (binaryOperators[line.replace(/ /g, '')[0]] && outputLines[previousAnswerIndex]) {
 						line = outputLines[previousAnswerIndex] + line;
 					}
 

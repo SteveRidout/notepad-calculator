@@ -1,6 +1,8 @@
-# Notepad Calculator
+# Notepad Calculator Prototype
 
-This is a simple single page web-app with no back end allowing you to mix free-form text and calculations, along with the ability to use variables. This code is the prototype of the more fully featured version at [notepadcalculator.com](http://notepadcalculator.com).
+This is a prototype simple single page web-app with no back-end allowing you to mix free-form text and calculations, along with the ability to use variables.
+
+A more fully featured version is available at [notepadcalculator.com](http://notepadcalculator.com).
 
 ## Storage of data
 

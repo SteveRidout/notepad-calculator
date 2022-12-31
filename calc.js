@@ -26,17 +26,23 @@ $(document).ready(function () {
 		"costPerCarton = eggsPerCarton * costPerEgg\n" +
 		"numberOfCartons = 60\n" +
 		"\n" +
-		"totalCost = costPerCarton * numberOfCartons\n";
+		"totalCost = costPerCarton * numberOfCartons\n" +
+		"\n" +
+		"\n" +
+		"Conversions\n" +
+		"-------------------\n" +
+		"\n" +
+		"12 cm to inches\n" +
+		"2 litres to cups\n" +
+		"1000 sqyard in hectares\n" +
+		"5000 watts to hp\n" +
+		"30 BTU in Wh\n" +
+		"3 decades in minutes";
 
 	var $inputArea = $('#inputArea'),
 		$outputArea = $('#outputArea');
 
-	var binaryOperators = {
-		'+': function (a, b) {return a + b;},
-		'-': function (a, b) {return a - b;},
-		'/': function (a, b) {return a / b;},
-		'*': function (a, b) {return a * b;}
-	};
+	var binaryOperators = /^[\+\-\*\/]/
 		
 	var previousAnswerLines = []; // keep copy of old answers to see what changed
 
@@ -52,29 +58,27 @@ $(document).ready(function () {
 
 		var previousAnswerIndex;
 
-    // Calculate answers using eval()
+    // Calculate answers using math.evaluate()
 		$.each(lines, function (i, line) {
 			try {
 				// remove all comment lines
 				if (line[0] && line[0] === "#") {
-					line = "";
+					return;
 				}
 
 				if (line.length > 0) {
           // If the line starts with an operator (+, -, *, /), prepend the previous answer
-					if (binaryOperators[line[0]] && outputLines[previousAnswerIndex]) {
-						line = outputLines[previousAnswerIndex] + line;
+					if (binaryOperators.test(line[0]) && outputLines[previousAnswerIndex]) {
+						line = "ans " + line;
 					}
 
-          // Allow user to use 'ans' to refer to previous answer
-					if (outputLines[previousAnswerIndex]) {
-						line = "ans=" + outputLines[previousAnswerIndex] + ";" + line;
-					}
-					var answer = eval(line); // jshint ignore:line
+					var answer = math.evaluate(line, context);
 
-					if (typeof(answer) === "number") {
-						outputLines[i] = Math.round(answer * 10000) / 10000;
+					if (typeof(answer) === "number" || answer instanceof math.Unit) {
+						outputLines[i] = answer;
 					}
+
+					context["ans"] = answer;
 					
 					previousAnswerIndex = i;
 				} else {
@@ -88,8 +92,8 @@ $(document).ready(function () {
 		var rows = [];
 		$.each(outputLines, function (index, line) {
 			var row;
-			if (typeof(line) === "number") {
-				row = line;
+			if (line instanceof math.Unit || typeof(line) === "number") {
+				row = math.format(line, 4)
 			} else {
 				row = '&nbsp;';
 			}

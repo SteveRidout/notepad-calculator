@@ -16,10 +16,6 @@ OK, so this isn't the most original idea in the world. A year or two ago I heard
 
 I now use it within [Fluid](http://fluidapp.com/), which creates a separate OS-X application just for this calculator, making it convienient to open using Spotlight instead of the default system calculator. The downside of this is that it doesn't retain the localStorage between sessions.
 
-## Warning
-
-It runs ```eval()``` on arbitrary user provided code. This isn't a problem if it's used as a completely private tool, but if you plan to develop this further to allow sharing of calculations, you'll definitely want to think seriously about the security implications.
-
 ## MIT Licenced
 
 I'm releasing this under the MIT licence, so feel free to do whatever you like with it! If you make anything cool, please let me know!

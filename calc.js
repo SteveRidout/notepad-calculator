@@ -45,7 +45,12 @@ $(document).ready(function () { import('https://cdnjs.cloudflare.com/ajax/libs/m
     "\n" +
     "extraEggs = 2\n" +
     '"If we added an extra {{extraEggs}} eggs to each carton"\n' +
-    '"The cartons would now cost {{(eggsPerCarton+extraEggs)*costPerEgg}} each"';
+    '"The cartons would now cost {{(eggsPerCarton+extraEggs)*costPerEgg}} each"\n' +
+    "speed = 5\n" +
+    '"""\n' +
+    'Running a marathon at {{speed}} min/km will take {{42.195*speed}} minutes.\n' +
+    'This is equivalent to {{60/speed}} km/h\n' +
+    '"""\n';
 
   var $inputArea = $("#inputArea"),
     $outputArea = $("#outputArea");

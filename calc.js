@@ -1,6 +1,6 @@
 // Note: can't use "strict mode" since we need to eval() non-strict code from the user
 
-$(document).ready(function () {
+$(document).ready(function () { import('https://cdnjs.cloudflare.com/ajax/libs/mustache.js/4.2.0/mustache.min.js').then((Mustache) => {
   var $ = window.$;
 
   var exampleCalculation =
@@ -37,12 +37,41 @@ $(document).ready(function () {
     "1000 sqyard in hectares\n" +
     "5000 watts to hp\n" +
     "30 BTU in Wh\n" +
-    "3 decades in minutes";
+    "3 decades in minutes\n" +
+    "\n" +
+    "\n" +
+    "Templates\n" +
+    "---------\n" + 
+    "\n" +
+    "extraEggs = 2\n" +
+    '"If we added an extra {{extraEggs}} eggs to each carton"\n' +
+    '"The cartons would now cost {{(eggsPerCarton+extraEggs)*costPerEgg}} each"\n' +
+    "speed = 5\n" +
+    '"""\n' +
+    'Running a marathon at {{speed}} min/km will take {{42.195*speed}} minutes.\n' +
+    'This is equivalent to {{60/speed}} km/h\n' +
+    '"""\n';
 
   var $inputArea = $("#inputArea"),
     $outputArea = $("#outputArea");
 
   var binaryOperators = /^[\+\-\*\/]/;
+  // This is not a full-blown JSON string match; if the string turns out not to be a valid string it will be picked up at parse time
+  var templateString = /^\s*".*"\s*$/;
+  var longTemplateStart = /^\s*"""/;
+  var longTemplateEnd = /"""\s*$/;
+
+  // This extends Mustache to be able to handle mathematical expressions within variables in templates
+  function MathWriter() {}
+  Object.setPrototypeOf(MathWriter.prototype, Mustache.default.Writer.prototype);
+  // this is an exact copy of Mustache.default.Writer.escapedValue, only changing the value to use math.evaluate
+  MathWriter.prototype.escapedValue = function escapedValue (token, context, config) {
+    var escape = this.getConfigEscape(config) || Mustache.default.escape;
+    var value = math.evaluate(token[1], context.view);
+    if (value != null)
+      return (typeof value === 'number' && escape === Mustache.default.escape) ? String(value) : escape(value);
+  }
+  var MathMustache = new MathWriter();
 
   var previousAnswerLines = []; // keep copy of old answers to see what changed
 
@@ -52,6 +81,7 @@ $(document).ready(function () {
     }
 
     var lines = $inputArea.val().split("\n");
+    var inLongTemplate = false;
 
     var outputLines = [];
     var context = {};
@@ -73,6 +103,35 @@ $(document).ready(function () {
             outputLines[previousAnswerIndex]
           ) {
             line = "ans " + line;
+          }
+          var isShortTemplate = templateString.test(line)
+          var isLongTemplateStart = longTemplateStart.test(line);
+          var isLongTemplateEnd = longTemplateEnd.test(line);
+          if (isShortTemplate || inLongTemplate || isLongTemplateStart) {
+            if (isLongTemplateStart) {
+              line = line.replace(line.match(longTemplateStart)[0], '');
+              inLongTemplate = true;
+            }
+            if (inLongTemplate && isLongTemplateEnd) {
+              line = line.replace(line.match(longTemplateEnd)[0], '');
+            }
+            if (inLongTemplate) {
+              templateSrc = line;
+              if (isLongTemplateEnd) {
+                inLongTemplate = false;
+              }
+            } else {
+              var templateMatch = line.match(templateString);
+              try {
+                var templateSrc = JSON.parse(templateMatch);
+              } catch(err) {
+                outputLines[i] = null;
+                return;
+              }
+            }
+            var renderedTemplate = MathMustache.render(templateSrc, context);
+            outputLines[i] = renderedTemplate;
+            return;
           }
 
           var answer = math.evaluate(line, context);
@@ -97,6 +156,8 @@ $(document).ready(function () {
       var row;
       if (line instanceof math.Unit || typeof line === "number") {
         row = math.format(line, 4);
+      } else if (typeof line == 'string') {
+        row = line;
       } else {
         row = "&nbsp;";
       }
@@ -170,4 +231,4 @@ $(document).ready(function () {
 
     printInitialLines();
   }
-});
+})});

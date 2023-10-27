@@ -1,6 +1,6 @@
 body {
   font-family: "Droid Sans Mono", Courier;
-  max-width: 700px;
+  max-width: 80%;
   margin: 0 auto;
 }
 p,
@@ -10,12 +10,12 @@ h1 {
 .left {
   display: inline-block;
   box-sizing: border-box;
-  width: 70%;
+  width: 60%;
 }
 .right {
   display: inline-block;
   box-sizing: border-box;
-  width: 30%;
+  width: 40%;
   vertical-align: top;
 }
 #inputArea {

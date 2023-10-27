@@ -37,7 +37,14 @@ $(document).ready(function () { import('https://cdnjs.cloudflare.com/ajax/libs/m
     "1000 sqyard in hectares\n" +
     "5000 watts to hp\n" +
     "30 BTU in Wh\n" +
-    "3 decades in minutes";
+    "3 decades in minutes\n" +
+    "\n" +
+    "\n" +
+    "Templates\n" +
+    "---------\n" + 
+    "\n" +
+    '"Since the price of eggs is {{costPerEgg}}, and there are {{eggsPerCarton}} eggs in each carton"\n' +
+    '"and since there are {{numberOfCartons}} cartons, the total cost is {{totalCost}}"';
 
   var $inputArea = $("#inputArea"),
     $outputArea = $("#outputArea");

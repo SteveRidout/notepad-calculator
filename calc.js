@@ -43,8 +43,9 @@ $(document).ready(function () { import('https://cdnjs.cloudflare.com/ajax/libs/m
     "Templates\n" +
     "---------\n" + 
     "\n" +
-    '"Since the price of eggs is {{costPerEgg}}, and there are {{eggsPerCarton}} eggs in each carton"\n' +
-    '"and since there are {{numberOfCartons}} cartons, the total cost is {{totalCost}}"';
+    "extraEggs = 2\n" +
+    '"If we added an extra {{extraEggs}} eggs to each carton"\n' +
+    '"The cartons would now cost {{(eggsPerCarton+extraEggs)*costPerEgg}} each"';
 
   var $inputArea = $("#inputArea"),
     $outputArea = $("#outputArea");
@@ -52,6 +53,18 @@ $(document).ready(function () { import('https://cdnjs.cloudflare.com/ajax/libs/m
   var binaryOperators = /^[\+\-\*\/]/;
   // This is not a full-blown JSON string match; if the string turns out not to be a valid string it will be picked up at parse time
   var templateString = /^\s*".*"\s*$/;
+
+  // This extends Mustache to be able to handle mathematical expressions within variables in templates
+  function MathWriter() {}
+  Object.setPrototypeOf(MathWriter.prototype, Mustache.default.Writer.prototype);
+  // this is an exact copy of Mustache.default.Writer.escapedValue, only changing the value to use math.evaluate
+  MathWriter.prototype.escapedValue = function escapedValue (token, context, config) {
+    var escape = this.getConfigEscape(config) || Mustache.default.escape;
+    var value = math.evaluate(token[1], context.view);
+    if (value != null)
+      return (typeof value === 'number' && escape === Mustache.default.escape) ? String(value) : escape(value);
+  }
+  var MathMustache = new MathWriter();
 
   var previousAnswerLines = []; // keep copy of old answers to see what changed
 
@@ -91,7 +104,7 @@ $(document).ready(function () { import('https://cdnjs.cloudflare.com/ajax/libs/m
               outputLines[i] = null;
               return;
             }
-            var renderedTemplate = Mustache.default.render(templateSrc, context);
+            var renderedTemplate = MathMustache.render(templateSrc, context);
             outputLines[i] = renderedTemplate;
             return;
           }

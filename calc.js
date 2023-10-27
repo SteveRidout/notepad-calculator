@@ -53,6 +53,8 @@ $(document).ready(function () { import('https://cdnjs.cloudflare.com/ajax/libs/m
   var binaryOperators = /^[\+\-\*\/]/;
   // This is not a full-blown JSON string match; if the string turns out not to be a valid string it will be picked up at parse time
   var templateString = /^\s*".*"\s*$/;
+  var longTemplateStart = /^\s*"""/;
+  var longTemplateEnd = /"""\s*$/;
 
   // This extends Mustache to be able to handle mathematical expressions within variables in templates
   function MathWriter() {}
@@ -74,6 +76,7 @@ $(document).ready(function () { import('https://cdnjs.cloudflare.com/ajax/libs/m
     }
 
     var lines = $inputArea.val().split("\n");
+    var inLongTemplate = false;
 
     var outputLines = [];
     var context = {};
@@ -96,13 +99,30 @@ $(document).ready(function () { import('https://cdnjs.cloudflare.com/ajax/libs/m
           ) {
             line = "ans " + line;
           }
-          if (templateString.test(line)) {
-            var templateMatch = line.match(templateString);
-            try {
-              var templateSrc = JSON.parse(templateMatch);
-            } catch(err) {
-              outputLines[i] = null;
-              return;
+          var isShortTemplate = templateString.test(line)
+          var isLongTemplateStart = longTemplateStart.test(line);
+          var isLongTemplateEnd = longTemplateEnd.test(line);
+          if (isShortTemplate || inLongTemplate || isLongTemplateStart) {
+            if (isLongTemplateStart) {
+              line = line.replace(line.match(longTemplateStart)[0], '');
+              inLongTemplate = true;
+            }
+            if (inLongTemplate && isLongTemplateEnd) {
+              line = line.replace(line.match(longTemplateEnd)[0], '');
+            }
+            if (inLongTemplate) {
+              templateSrc = line;
+              if (isLongTemplateEnd) {
+                inLongTemplate = false;
+              }
+            } else {
+              var templateMatch = line.match(templateString);
+              try {
+                var templateSrc = JSON.parse(templateMatch);
+              } catch(err) {
+                outputLines[i] = null;
+                return;
+              }
             }
             var renderedTemplate = MathMustache.render(templateSrc, context);
             outputLines[i] = renderedTemplate;

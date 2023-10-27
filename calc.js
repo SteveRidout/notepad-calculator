@@ -1,6 +1,6 @@
 // Note: can't use "strict mode" since we need to eval() non-strict code from the user
 
-$(document).ready(function () {
+$(document).ready(function () { import('https://cdnjs.cloudflare.com/ajax/libs/mustache.js/4.2.0/mustache.min.js').then((Mustache) => {
   var $ = window.$;
 
   var exampleCalculation =
@@ -43,6 +43,8 @@ $(document).ready(function () {
     $outputArea = $("#outputArea");
 
   var binaryOperators = /^[\+\-\*\/]/;
+  // This is not a full-blown JSON string match; if the string turns out not to be a valid string it will be picked up at parse time
+  var templateString = /^\s*".*"\s*$/;
 
   var previousAnswerLines = []; // keep copy of old answers to see what changed
 
@@ -74,6 +76,18 @@ $(document).ready(function () {
           ) {
             line = "ans " + line;
           }
+          if (templateString.test(line)) {
+            var templateMatch = line.match(templateString);
+            try {
+              var templateSrc = JSON.parse(templateMatch);
+            } catch(err) {
+              outputLines[i] = null;
+              return;
+            }
+            var renderedTemplate = Mustache.default.render(templateSrc, context);
+            outputLines[i] = renderedTemplate;
+            return;
+          }
 
           var answer = math.evaluate(line, context);
 
@@ -97,6 +111,8 @@ $(document).ready(function () {
       var row;
       if (line instanceof math.Unit || typeof line === "number") {
         row = math.format(line, 4);
+      } else if (typeof line == 'string') {
+        row = line;
       } else {
         row = "&nbsp;";
       }
@@ -170,4 +186,4 @@ $(document).ready(function () {
 
     printInitialLines();
   }
-});
+})});

@@ -1,0 +1,45 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:14-alpine
+    environment:
+      POSTGRES_USER: notepadcalculator
+      POSTGRES_PASSWORD: localdevpassword
+      POSTGRES_DB: notepadcalculator
+    ports:
+      - "5433:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U notepadcalculator"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  app:
+    build: .
+    ports:
+      - "4002:4002"
+    environment:
+      NODE_ENV: development
+      NODE_PORT: 4002
+      DB_HOST: postgres
+      DB_NAME: notepadcalculator
+      DB_USER: notepadcalculator
+      DB_PASSWORD: localdevpassword
+    depends_on:
+      postgres:
+        condition: service_healthy
+    volumes:
+      - ./server:/app/server
+      - ./web:/app/web
+      - ./shared:/app/shared
+      - /app/server/node_modules
+      - /app/web/node_modules
+    command: sh -c "cd /app && sh docker-dev.sh"
+    stdin_open: true
+    tty: true
+
+volumes:
+  postgres_data:

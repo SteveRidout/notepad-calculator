@@ -1,0 +1,80 @@
+@import "./constants.scss";
+
+.nav-bar {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+
+  flex: 0 0 auto;
+  margin: $unit;
+  padding-bottom: $unit;
+  border-bottom: 1px solid $color-text;
+
+  @media (max-width: $max-small-desktop-width) {
+    margin-bottom: 0;
+  }
+
+  a {
+    text-decoration: none;
+    vertical-align: middle;
+  }
+
+  .logo {
+    font-weight: 700;
+  }
+
+  .guest-container {
+    position: relative;
+
+    &:hover {
+      .guest-tooltip {
+        display: block;
+      }
+    }
+  }
+
+  .nav-bar-group {
+    color: $color-text;
+
+    a:not(.sign-up) {
+      color: $color-text;
+    }
+  }
+
+  .guest-tooltip {
+    position: absolute;
+    border: 1px solid #000;
+    background-color: #fff;
+    padding: $unit;
+    width: 300px;
+    right: -50px;
+    top: calc(100% + 5px);
+    display: none;
+
+    h3, p {
+      &:first-child {
+        margin-top: 0;
+      }
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+    }
+  }
+
+  &.dark-mode {
+    border-bottom-color: #fff;
+
+    .guest-tooltip {
+      background-color: #fff;
+    }
+
+    .nav-bar-group {
+      color: $color-text-dark;
+
+      a:not(.sign-up) {
+        color: $color-text-dark;
+      }
+    }
+  }
+}

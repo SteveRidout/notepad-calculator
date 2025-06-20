@@ -1,0 +1,1 @@
+psql -d notepadcalculator -U notepadcalculator

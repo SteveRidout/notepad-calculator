@@ -1,0 +1,45 @@
+@import "./constants.scss";
+
+.auth-page-main-content {
+  margin: $unit auto;
+  width: 50%;
+  min-width: 300px;
+}
+
+.auth-form {
+  table {
+    width: 100%;
+
+    td {
+      padding: 2px 0;
+    }
+
+    td:first-child {
+      padding-right: 2 * $unit;
+      width: 33%;
+    }
+  }
+
+  input:not([type="checkbox"]) {
+    padding: 6px 8px;
+    margin-left: 4px;
+    width: 100%;
+    font-size: 16px;
+  }
+
+  input[type="checkbox"] {
+    width: 20px;
+    height: 20px;
+  }
+
+  button {
+    padding: $unit;
+    width: 100%;
+    font-size: 18px;
+  }
+}
+
+.error-message {
+  color: $color-warning;
+  font-weight: 700;
+}

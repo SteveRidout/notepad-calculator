@@ -1,0 +1,78 @@
+@import "./constants.scss";
+
+.about-page-main-content {
+  margin: $unit auto;
+  min-width: 300px;
+  width: 100%;
+  padding: 0 25%;
+  overflow-y: auto;
+
+  @media (max-width: $max-mobile-width) {
+    padding: 0 $unit;
+  }
+}
+
+.footer {
+  flex: 0 0 auto;
+  margin: $unit;
+  text-align: center;
+}
+
+.main-container {
+  display: flex;
+  flex-direction: row;
+  gap: $unit;
+  align-items: stretch;
+  margin: $unit;
+  flex: 1 1 auto;
+  overflow: hidden;
+
+  @media (max-width: $max-mobile-width) {
+    overflow: visible;
+  }
+}
+
+.note-list-column {
+  flex: 0 0 auto;
+  width: 25%;
+  max-width: 200px;
+  line-height: 1.4;
+  overflow-y: auto;
+}
+
+.add-notes-hint {
+  margin-top: $unit;
+  line-height: 1.4;
+}
+
+.invalid {
+  color: $color-warning;
+}
+
+.locale-input {
+  padding: 4px;
+
+  &.dark-mode {
+    color: $color-text-dark;
+    background-color: $color-background-dark;
+    border: $color-text-dark 1px solid;
+
+    &:focus {
+      border-color: $color-cta-dark;
+      outline: none;
+      box-shadow: 0 0 0 1px $color-cta-dark;
+    }
+  }
+}
+
+.reset-password-table {
+  button,
+  input {
+    padding: 8px;
+    font-size: 17px;
+  }
+
+  td {
+    padding: 4px;
+  }
+}

@@ -1,0 +1,475 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;700&display=swap");
+@import "./constants.scss";
+
+.calculations-column {
+  display: flex;
+  flex-direction: column;
+  flex: 2 1 auto;
+}
+
+.delete-page-button {
+  display: inline-block;
+  text-align: right;
+  margin: $unit 0;
+  font-weight: 700;
+  padding-left: $unit;
+}
+
+.note-header-row {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.note-name-heading {
+  font-size: 27px;
+  font-weight: 700;
+  margin: $unit 2px;
+  border: none;
+  padding: $unit;
+
+  @media (max-width: $max-small-desktop-width) {
+    font-size: 24px;
+  }
+
+  @media (max-width: $max-mobile-width) {
+    font-size: 19px;
+  }
+}
+
+.note-name-container {
+  flex: 1 1 auto;
+  position: relative;
+}
+
+.note-name-dropdown-triangle-container {
+  position: absolute;
+  top: 0;
+  right: 0;
+  text-align: right;
+  bottom: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.note-name-dropdown-triangle {
+  padding: $unit;
+  cursor: pointer;
+}
+
+.dropdown {
+  position: absolute;
+  top: calc(100% - $unit - 1px);
+  left: 0;
+  right: 0;
+  background: #fff;
+  border: 1px solid #000;
+  border-radius: 3px;
+  padding: 0 $unit $unit;
+  z-index: 1;
+  max-height: 65vh;
+  overflow-y: scroll;
+
+  // XXX margin to match the input and textarea, can't remember why these were necessary
+  margin: 0 2px;
+
+  &.dark-mode {
+    background-color: $color-background-dark;
+    border-color: #fff;
+  }
+}
+
+.note-name-heading {
+  border: 1px solid #000;
+  border-radius: 3px;
+  width: calc(100% - 4px);
+
+  &:focus {
+    outline: none;
+    border-color: $color-cta;
+    box-shadow: 0 0 0 1px $color-cta;
+  }
+
+  &.dark-mode {
+    background-color: $color-background-dark;
+    border-color: #fff;
+    color: $color-text-dark;
+
+    &:focus {
+      border-color: $color-cta-dark;
+      box-shadow: 0 0 0 1px $color-cta-dark;
+      box-shadow: 0 0 0 1px $color-cta-dark;
+    }
+  }
+}
+
+@mixin note-text {
+  font-size: 16px;
+  font-family: Menlo, "Roboto Mono", monospace;
+  white-space: pre-wrap;
+  word-break: normal;
+  overflow-wrap: anywhere;
+  margin: 0;
+  padding: $unit 33% $unit $unit;
+  border: 0;
+  line-height: 1.4;
+
+  @media (max-width: $max-small-desktop-width) {
+    font-size: 14px;
+  }
+
+  @media (max-width: $max-mobile-width) {
+    font-size: 12px;
+  }
+}
+
+@mixin underline {
+  &::after {
+    content: "";
+    position: absolute;
+    bottom: 1px;
+    height: 1px;
+    left: 0;
+    right: 0;
+    background-color: $color-ruler;
+  }
+}
+
+.autocomplete-container {
+  @include note-text;
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  color: transparent;
+}
+
+.selected-word {
+  white-space: nowrap;
+}
+
+.autocomplete-suggestions-container {
+  position: relative;
+  display: inline-block;
+  font-weight: 700;
+}
+
+.autocomplete-suggestions {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  margin-top: $unit;
+  background: #fff;
+  border: 1px solid #888;
+
+  ul {
+    padding: 0;
+    margin: 0;
+    list-style: none;
+  }
+
+  .suggestion {
+    padding: 2px $unit;
+    color: #888;
+    pointer-events: auto;
+    cursor: pointer;
+
+    &.selected-suggestion {
+      background-color: $color-cta;
+      color: #fff;
+    }
+  }
+
+  .suggestion-type {
+    font-weight: 500;
+    opacity: 0.6;
+  }
+
+  &.dark-mode {
+    background: #000;
+    border-color: rgb(82, 90, 110);
+
+    .suggestion {
+      color: #888;
+
+      &.selected-suggestion {
+        background-color: darken($color-cta-dark, 30%);
+        color: $color-text-dark;
+      }
+    }
+  }
+}
+
+.calculations-container {
+  position: relative;
+  flex: 1 1 auto;
+  overflow-y: scroll;
+  border: 1px solid #000;
+  border-radius: 3px;
+  margin: 2px;
+
+  &.calculations-container-focussed {
+    border-color: $color-cta;
+    box-shadow: 0 0 0 1px $color-cta;
+  }
+
+  .calculations-inner-container {
+    position: relative;
+
+    // This ensures that the text area takes up most of the vertical space even when it doesn't
+    // contain much text, so that if the user clicks in the empty white space below the current
+    // contents, it will still focus the text area.
+    min-height: calc(100% - 10px);
+
+    padding-bottom: 40px;
+  }
+
+  textarea {
+    @include note-text;
+    position: absolute;
+    inset: 0;
+    resize: none;
+    overflow: hidden;
+    height: 100%;
+    width: 100%;
+
+    &:focus {
+      outline: none;
+    }
+  }
+
+  .overlay {
+    @include note-text;
+    position: relative;
+    pointer-events: none;
+    color: transparent;
+    font-weight: 700;
+    margin-bottom: $unit;
+    padding-left: 0;
+  }
+
+  .overlay-line {
+    position: relative;
+    padding-left: $unit;
+
+    &.underline {
+      @include underline;
+
+      &.dark-mode {
+        &::after {
+          background-color: $color-ruler-dark;
+        }
+      }
+    }
+  }
+
+  .highlight-orange {
+    background-color: rgba(255, 208, 36, 0.749);
+
+    &.dark-mode {
+      background-color: rgba(255, 208, 36, 0.329);
+    }
+  }
+
+  .highlight-blue {
+    background-color: rgba(34, 226, 255, 0.743);
+
+    &.dark-mode {
+      background-color: rgba(34, 226, 255, 0.391);
+    }
+  }
+
+  .highlight-red {
+    background-color: rgba(255, 22, 22, 0.802);
+
+    &.dark-mode {
+      background-color: rgba(255, 22, 22, 0.27);
+    }
+  }
+
+  .highlight-green {
+    background-color: rgba(37, 255, 22, 0.802);
+
+    &.dark-mode {
+      background-color: rgba(37, 255, 22, 0.316);
+    }
+  }
+
+  .highlight-green,
+  .highlight-orange,
+  .highlight-blue,
+  .highlight-red {
+    .overlay-part-hidden {
+      color: #000;
+      font-weight: 500;
+    }
+
+    &.dark-mode {
+      .overlay-part-hidden {
+        color: #fff;
+      }
+    }
+  }
+
+  .vertical-rule {
+    position: absolute;
+    inset: 0 calc(33% - $unit) 0 0;
+    border-right: 1px solid $color-ruler;
+    pointer-events: none;
+  }
+
+  .overlay-part-visible {
+    color: $color-cta;
+  }
+
+  .overlay-part-hidden {
+    color: transparent;
+  }
+
+  .overlay-part-comment {
+    color: $color-comment;
+    font-weight: 500;
+  }
+
+  .overlay-part-comment-highlight {
+    color: rgba(0, 0, 0, 0.3);
+    font-weight: 500;
+
+    .highlight-orange {
+      color: rgb(190, 149, 0);
+
+      &.dark-mode {
+        color: rgb(255, 225, 118);
+      }
+    }
+
+    .highlight-blue {
+      color: rgb(0, 156, 180);
+
+      &.dark-mode {
+        color: rgb(84, 232, 255);
+      }
+    }
+
+    .highlight-red {
+      color: rgb(186, 0, 0);
+
+      &.dark-mode {
+        color: rgb(255, 97, 97);
+      }
+    }
+
+    .highlight-green {
+      color: rgb(11, 169, 0);
+
+      &.dark-mode {
+        color: rgb(106, 255, 95);
+      }
+    }
+  }
+
+  .overlay-answer {
+    position: absolute;
+    bottom: 0;
+    left: 100%;
+    padding-left: 2 * $unit;
+    color: $color-answer;
+    pointer-events: auto;
+    white-space: nowrap;
+
+    @include underline;
+
+    &.answer-changed {
+      color: $color-answer-changed;
+    }
+
+    &.highlight-blue {
+      color: rgb(0, 0, 92);
+    }
+
+    &.highlight-orange {
+      color: rgb(94, 94, 0);
+    }
+
+    &.highlight-red {
+      color: rgb(103, 0, 0);
+    }
+
+    &.highlight-green {
+      color: rgb(3, 82, 0);
+    }
+
+    &.highlight-blue,
+    &.highlight-orange,
+    &.highlight-red,
+    &.highlight-green {
+      padding-right: $unit;
+
+      &::after {
+        display: none;
+      }
+    }
+  }
+
+  &.dark-mode {
+    border-color: #fff;
+
+    &.calculations-container-focussed {
+      border-color: $color-cta-dark;
+      box-shadow: 0 0 0 1px $color-cta-dark;
+    }
+
+    textarea {
+      background-color: $color-background-dark;
+      color: $color-text-dark;
+    }
+
+    .overlay-part-visible {
+      color: $color-cta-dark;
+    }
+
+    .overlay-part-comment {
+      color: $color-comment-dark;
+    }
+
+    .overlay-answer {
+      color: $color-answer-dark;
+
+      &.answer-changed {
+        color: $color-answer-changed-dark;
+      }
+
+      &.highlight-blue,
+      &.highlight-orange,
+      &.highlight-red,
+      &.highlight-green {
+        color: #fff;
+      }
+    }
+
+    .vertical-rule {
+      border-right-color: $color-ruler-dark;
+    }
+
+    .overlay-line.underline.dark-mode,
+    .overlay-answer {
+      &::after {
+        background-color: $color-ruler-dark;
+      }
+    }
+  }
+}
+
+.answers-column {
+  flex: 1 0 auto;
+  max-width: 25%;
+
+  .answers-container {
+    overflow: hidden;
+  }
+
+  .answers {
+    position: relative;
+    @include note-text;
+  }
+}

@@ -1,0 +1,49 @@
+@import "./constants.scss";
+
+.note-list {
+  list-style: none;
+  padding: 0;
+  margin: $unit 0;
+
+  &.dark-mode {
+    .note {
+      color: $color-text-dark;
+
+      a {
+        color: $color-text-dark;
+      }
+    }
+
+    .selected-note {
+      background-color: $color-selected-background-dark;
+    }
+  }
+}
+
+.note {
+  cursor: pointer;
+  color: $color-text;
+  font-weight: 700;
+  padding: 8px;
+  border-radius: 4px;
+
+  a {
+    text-decoration: none;
+    color: $color-text;
+    width: 100%;
+  }
+}
+
+.selected-note {
+  background-color: $color-selected-background;
+}
+
+.new-note-button {
+  font-weight: 700;
+  display: inline-block;
+  padding-top: 15px;
+
+  @media (max-width: $max-mobile-width) {
+    padding-top: 10px;
+  }
+}

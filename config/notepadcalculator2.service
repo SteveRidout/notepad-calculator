@@ -1,0 +1,19 @@
+[Unit]
+Description=Notepad Calculator Server
+Documentation=https://notepadcalculator.com
+After=network.target
+
+[Service]
+Environment="NODE_PORT=11420"
+Environment="HOST=https://notepadcalculator.com"
+Environment="NODE_ENV=production"
+Type=simple
+User=steve
+WorkingDirectory=/var/www/notepadcalculator2/server
+ExecStart=/home/steve/.nodenv/shims/node dist/serverBundle.js
+Restart=on-failure
+StandardOutput=append:/var/www/notepadcalculator2/server-stdout.log
+StandardError=append:/var/www/notepadcalculator2/server-stderr.log
+
+[Install]
+WantedBy=multi-user.target

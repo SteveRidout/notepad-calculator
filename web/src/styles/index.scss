@@ -1,0 +1,45 @@
+@import "constants";
+
+html,
+body {
+  height: 100%;
+  width: 100%;
+  padding: 0;
+  margin: 0;
+  background: #fff;
+  font-family: "Helvetica Neue", arial, sans-serif;
+  font-weight: 400;
+  font-size: 18px;
+  color: $color-text;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
+  // This is necessary to avoid the textarea formatting going out of sync with the overlay
+  -webkit-text-size-adjust: none;
+
+  @media (max-width: $max-small-desktop-width) {
+    font-size: 16px;
+  }
+
+  &.dark-mode {
+    background: $color-background-dark;
+    color: $color-text-dark;
+
+    a {
+      color: $color-cta-dark;
+    }
+  }
+}
+
+* {
+  box-sizing: border-box;
+}
+
+a {
+  color: $color-cta;
+  cursor: pointer;
+}
+
+ul {
+  padding-left: 25px;
+}

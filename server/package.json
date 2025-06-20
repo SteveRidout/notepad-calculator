@@ -1,0 +1,44 @@
+{
+  "name": "notepad-calculator-backend",
+  "version": "1.0.0",
+  "description": "Web-app to create freeform text notes with calculations",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/archiver": "^6.0.2",
+    "@types/bcrypt": "5.0.0",
+    "@types/cookie-session": "2.0.44",
+    "@types/express": "4.17.13",
+    "@types/express-fileupload": "1.2.2",
+    "@types/lodash": "4.14.178",
+    "@types/passport-local": "1.0.34",
+    "image-size": "1.0.1",
+    "knex": "1.0.3",
+    "multiexec": "0.0.3",
+    "nodemon": "2.0.15",
+    "sourcemap-lookup": "0.0.5",
+    "ts-loader": "9.2.6",
+    "ts-node": "10.4.0",
+    "typescript": "4.5.2",
+    "webpack": "5.67.0",
+    "webpack-cli": "4.9.2",
+    "webpack-node-externals": "3.0.0"
+  },
+  "dependencies": {
+    "archiver": "^6.0.1",
+    "axios": "0.25.0",
+    "bcrypt": "5.0.1",
+    "cookie-session": "2.0.0",
+    "express": "4.17.2",
+    "express-fileupload": "1.3.1",
+    "lodash": "4.17.21",
+    "passport": "0.5.2",
+    "passport-local": "1.0.0",
+    "pg": "8.16.2",
+    "qs": "6.10.3"
+  }
+}

@@ -1,0 +1,19 @@
+@import "./constants.scss";
+
+.page {
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  inset: 0;
+  max-width: 1200px;
+  margin: 0 auto;
+
+  &.dark-mode {
+    color: $color-text-dark;
+    background-color: $color-background-dark;
+  }
+
+  @media (max-width: $max-mobile-width) {
+    position: relative;
+  }
+}

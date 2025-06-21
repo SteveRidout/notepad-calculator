@@ -18,6 +18,11 @@ const AboutPage: FunctionalComponent<Props> = ({ user }) => {
     <div className={style["about-page-main-content"]}>
       <h2>About Notepad Calculator</h2>
       <p>
+        Notepad Calculator is an open source web app that allows you to mix
+        plain text notes with calculations.
+      </p>
+
+      <p>
         I often find myself wanting to jot down some back-of-the-envelope style
         calculations for which a typical calculator is too limited, and a
         spreadsheet is overkill. Back in 2015 I heard about an iOS app called
@@ -29,6 +34,12 @@ const AboutPage: FunctionalComponent<Props> = ({ user }) => {
 
       <p>
         I've used and improved it over the years, but it remains a simple tool.
+      </p>
+
+      <p>
+        <a href="https://github.com/SteveRidout/notepad-calculator">
+          GitHub repo link
+        </a>
       </p>
 
       <p>

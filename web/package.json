@@ -24,7 +24,7 @@
     "@types/gapi": "^0.0.41",
     "axios": "0.25.0",
     "lodash": "4.17.21",
-    "mathjs": "11.4.0",
+    "mathjs": "15.0.0",
     "preact": "^10.3.1",
     "preact-render-to-string": "^5.1.4",
     "preact-router": "^4.1"

@@ -35,6 +35,7 @@ services:
       - ./server:/app/server
       - ./web:/app/web
       - ./shared:/app/shared
+      - ./docker-dev.sh:/app/docker-dev.sh
       - /app/server/node_modules
       - /app/web/node_modules
     command: sh -c "cd /app && sh docker-dev.sh"

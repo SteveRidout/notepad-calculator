@@ -163,6 +163,11 @@ select date_trunc('week', creation_time) as weekly, count(*) from note group by 
 select date(last_modified_time), count(*) from note group by date(last_modified_time) order by date(last_modified_time);
 ```
 
+```sh
+# Check access logs
+sudo sh -c '(zcat /var/log/nginx/access.log.[2-5].gz; cat /var/log/nginx/access.log.1 /var/log/nginx/access.log) | grep https://notepadcalculator.com | goaccess --log-format=COMBINED --ignore-crawlers'
+```
+
 # Reset password instructions
 
 For now this involves me since we don't have user email addresses.
@@ -191,3 +196,5 @@ insert into reset_password (code, user_id) values ('xxxxxxx', $USER_ID);
 ```
 
 Their reset URL will then be `https://notepadcalculator.com/resetPassword/xxxxxxx`
+
+sudo cat /var/log/nginx/access.log.1 /var/log/nginx/access.log | grep https://notepadcalculator.com | goaccess --log-format=COMBINED --ignore-crawlers

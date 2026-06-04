@@ -25,6 +25,7 @@ services:
       NODE_ENV: development
       NODE_PORT: 4002
       DB_HOST: postgres
+      DB_PORT: 5432
       DB_NAME: notepadcalculator
       DB_USER: notepadcalculator
       DB_PASSWORD: localdevpassword

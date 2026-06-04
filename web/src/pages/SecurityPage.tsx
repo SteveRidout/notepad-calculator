@@ -52,7 +52,9 @@ const SecurityPage: FunctionalComponent = () => {
       <h3>What should I do?</h3>
       <ul>
         <li>Log in again and check your notes.</li>
-        <li>Change your Notepad Calculator password.</li>
+        <li>
+          <a href="/account">Change your Notepad Calculator password.</a>
+        </li>
         <li>
           If you reused that password anywhere else, change it on those sites
           too.

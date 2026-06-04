@@ -1,0 +1,59 @@
+@import "./constants.scss";
+
+.account-page-main-content {
+  flex: 1 1 auto;
+  margin: $unit auto;
+  min-width: 300px;
+  padding: 0 25% 3 * $unit 25%;
+  width: 100%;
+  overflow-y: auto;
+
+  @media (max-width: $max-mobile-width) {
+    margin: $unit;
+    padding: 0 0 3 * $unit 0;
+  }
+
+  button {
+    margin-top: $unit;
+    padding: $unit;
+    width: 100%;
+    font-size: 18px;
+  }
+}
+
+.account-section {
+  margin-top: 2 * $unit;
+
+  h3 {
+    margin-bottom: $unit;
+  }
+}
+
+.account-table {
+  width: 100%;
+
+  td {
+    padding: 4px 0;
+  }
+
+  td:first-child {
+    padding-right: 2 * $unit;
+    width: 33%;
+  }
+
+  input {
+    padding: 6px 8px;
+    width: 100%;
+    font-size: 16px;
+  }
+}
+
+.error-message {
+  color: $color-warning;
+  font-weight: 700;
+}
+
+.success-message {
+  color: $color-comment;
+  font-weight: 700;
+}

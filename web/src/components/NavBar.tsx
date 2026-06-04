@@ -59,7 +59,9 @@ const NavBar: FunctionalComponent<Props> = ({ loading, user, isMobile }) => {
       ) : (
         <div className={style["nav-bar-group"]}>
           {user ? (
-            <span style={style["nav-bar-item"]}>{user.username}</span>
+            <a style={style["nav-bar-item"]} href="/account">
+              {user.username}
+            </a>
           ) : (
             <a style={style["nav-bar-item"]} href="/login">
               Login

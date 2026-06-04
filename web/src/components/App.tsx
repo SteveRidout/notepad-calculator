@@ -5,6 +5,7 @@ import { Router } from "preact-router";
 import { PublicUser } from "../../../shared/types";
 
 import AboutPage from "../pages/AboutPage";
+import AccountPage from "../pages/AccountPage";
 import AuthPage from "../pages/AuthPage";
 import HomePage from "../pages/HomePage";
 import NotFoundPage from "../pages/NotFoundPage";
@@ -91,6 +92,7 @@ class App extends Component<Props, State> {
             <Redirect path="/notes/:noteId" to="/" />
             <AuthPage path="/login" user={user} type="login" key="login" />
             <AuthPage path="/signUp" user={user} type="signUp" key="signUp" />
+            <Redirect path="/account" to="/login" />
             <AboutPage path="/about" user={user} />
             <SecurityPage path="/security" />
             <NotFoundPage path="/:catchAll" />
@@ -112,6 +114,7 @@ class App extends Component<Props, State> {
         <Router>
           <HomePage path="/" user={user} isMobile={isMobile} />
           <HomePage path="/notes/:noteId" user={user} isMobile={isMobile} />
+          <AccountPage path="/account" user={user} />
           <AuthPage path="/login" user={user} type="login" key="login" />
           <AuthPage path="/signUp" user={user} type="signUp" key="signUp" />
           <AboutPage path="/about" user={user} />

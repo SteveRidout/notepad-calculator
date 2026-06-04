@@ -45,7 +45,7 @@ const securityHeaders: express.RequestHandler = (_req, res, next) => {
   res.setHeader("Referrer-Policy", "same-origin");
   res.setHeader(
     "Permissions-Policy",
-    "camera=(), microphone=(), geolocation=(), payment=()"
+    "camera=(), microphone=(), geolocation=(), payment=()",
   );
   res.setHeader(
     "Content-Security-Policy",
@@ -60,7 +60,7 @@ const securityHeaders: express.RequestHandler = (_req, res, next) => {
       "form-action 'self'",
       "frame-ancestors 'none'",
       "object-src 'none'",
-    ].join("; ")
+    ].join("; "),
   );
 
   if (isProduction) {
@@ -102,7 +102,11 @@ const rejectCrossSiteMutations: express.RequestHandler = (req, res, next) => {
   }
 
   const origin = req.get("origin");
-  if (origin !== undefined && allowedOrigin !== undefined && origin !== allowedOrigin) {
+  if (
+    origin !== undefined &&
+    allowedOrigin !== undefined &&
+    origin !== allowedOrigin
+  ) {
     res.status(403).send("Cross-origin request rejected");
     return;
   }
@@ -131,7 +135,7 @@ app.use(
     httpOnly: true,
     sameSite: "lax",
     secure: isProduction,
-  })
+  }),
 );
 
 const slowMode = process.env.NODE_ENV === "development";
@@ -158,7 +162,7 @@ app.use(
       next();
     }, 500);
   },
-  apiRouter
+  apiRouter,
 );
 app.use("/passwordReset", authRateLimit, passwordResetRouter);
 app.use(express.static("../web/dist/"));

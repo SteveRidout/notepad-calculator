@@ -11,6 +11,8 @@ export interface User {
   creationTime: Date;
 }
 
+export type PublicUser = Omit<User, "hashedPassword">;
+
 export interface Note {
   id: number;
   // userId: number;

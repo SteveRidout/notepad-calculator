@@ -191,8 +191,8 @@ select * from "user" where username = 'their username';
 # Generate random code
 npx ts-node randomCode.ts
 
-# When in psql, replace values as appropriate.
-insert into reset_password (code, user_id) values ('xxxxxxx', $USER_ID);
+# When in psql, replace values as appropriate. Reset links expire after 24 hours.
+insert into reset_password (code, user_id, creation_time) values ('xxxxxxx', $USER_ID, now());
 ```
 
 Their reset URL will then be `https://notepadcalculator.com/resetPassword/xxxxxxx`

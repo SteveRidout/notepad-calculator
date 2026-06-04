@@ -1,7 +1,7 @@
 import * as types from "./types";
 
 export interface UserResponse {
-  user: types.User;
+  user: types.PublicUser;
 }
 
 export interface UpdateUserRequest {

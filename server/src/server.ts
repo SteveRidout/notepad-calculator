@@ -5,6 +5,7 @@ import path from "path";
 import { URL } from "url";
 
 import { auth } from "./baseLib/auth";
+import { rateLimit } from "./baseLib/rateLimit";
 import apiRouter from "./routes/api";
 import authRouter from "./routes/auth";
 import passwordResetRouter from "./routes/passwordReset";
@@ -36,9 +37,62 @@ const getAllowedOrigin = () => {
 };
 
 const allowedOrigin = getAllowedOrigin();
+const safeMethods = ["GET", "HEAD", "OPTIONS"];
+
+const securityHeaders: express.RequestHandler = (_req, res, next) => {
+  res.setHeader("X-Content-Type-Options", "nosniff");
+  res.setHeader("X-Frame-Options", "DENY");
+  res.setHeader("Referrer-Policy", "same-origin");
+  res.setHeader(
+    "Permissions-Policy",
+    "camera=(), microphone=(), geolocation=(), payment=()"
+  );
+  res.setHeader(
+    "Content-Security-Policy",
+    [
+      "default-src 'self'",
+      "script-src 'self'",
+      "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
+      "font-src 'self' https://fonts.gstatic.com",
+      "img-src 'self' data:",
+      "connect-src 'self'",
+      "base-uri 'self'",
+      "form-action 'self'",
+      "frame-ancestors 'none'",
+      "object-src 'none'",
+    ].join("; ")
+  );
+
+  if (isProduction) {
+    res.setHeader("Strict-Transport-Security", "max-age=31536000");
+  }
+
+  next();
+};
+
+const authRateLimit = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  maxRequests: 30,
+  keyPrefix: "auth",
+});
+
+const apiWriteIpRateLimit = rateLimit({
+  windowMs: 5 * 60 * 1000,
+  maxRequests: 600,
+  keyPrefix: "api-write-ip",
+  skip: (req) => safeMethods.includes(req.method),
+});
+
+const apiWriteUserRateLimit = rateLimit({
+  windowMs: 5 * 60 * 1000,
+  maxRequests: 300,
+  keyPrefix: "api-write-user",
+  key: (req) => req.user?.id?.toString() ?? req.ip ?? "unknown",
+  skip: (req) => safeMethods.includes(req.method),
+});
 
 const rejectCrossSiteMutations: express.RequestHandler = (req, res, next) => {
-  if (["GET", "HEAD", "OPTIONS"].includes(req.method)) {
+  if (safeMethods.includes(req.method)) {
     return next();
   }
 
@@ -85,12 +139,15 @@ const slowMode = process.env.NODE_ENV === "development";
 // Set up passport and session handling.
 app.use(passport.initialize());
 app.use(passport.session());
+app.use(securityHeaders);
 app.use(rejectCrossSiteMutations);
 
-app.use("/auth", authRouter);
+app.use("/auth", authRateLimit, authRouter);
 app.use(
   "/api",
   isAuthenticated,
+  apiWriteIpRateLimit,
+  apiWriteUserRateLimit,
   (_req, _res, next) => {
     if (!slowMode) {
       next();
@@ -103,7 +160,7 @@ app.use(
   },
   apiRouter
 );
-app.use("/passwordReset", passwordResetRouter);
+app.use("/passwordReset", authRateLimit, passwordResetRouter);
 app.use(express.static("../web/dist/"));
 
 const port = process.env["NODE_PORT"] ?? 4002;

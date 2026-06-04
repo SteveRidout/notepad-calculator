@@ -2,11 +2,11 @@ import { FunctionalComponent, h } from "preact";
 import { useState } from "preact/hooks";
 
 import style from "../styles/HomePage.module.scss";
-import { User } from "../../../shared/types";
+import { PublicUser } from "../../../shared/types";
 import * as localSettings from "../localSettings";
 
 interface Props {
-  user: User | undefined;
+  user: PublicUser | undefined;
 }
 
 const AboutPage: FunctionalComponent<Props> = ({ user }) => {
@@ -40,6 +40,9 @@ const AboutPage: FunctionalComponent<Props> = ({ user }) => {
         <a href="https://github.com/SteveRidout/notepad-calculator">
           GitHub repo link
         </a>
+      </p>
+      <p>
+        <a href="/security">Security incident information</a>
       </p>
 
       <p>

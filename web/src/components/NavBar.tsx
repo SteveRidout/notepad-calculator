@@ -2,11 +2,11 @@ import { FunctionalComponent, h } from "preact";
 
 import * as api from "../api";
 import style from "../styles/NavBar.module.scss";
-import { User } from "../../../shared/types";
+import { PublicUser } from "../../../shared/types";
 import * as localSettings from "../localSettings";
 
 interface Props {
-  user: User | undefined;
+  user: PublicUser | undefined;
   loading?: boolean;
   isMobile: boolean;
 }

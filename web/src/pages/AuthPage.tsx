@@ -1,13 +1,13 @@
 import { Component, h } from "preact";
 
 import style from "../styles/AuthPage.module.scss";
-import { User } from "../../../shared/types";
+import { PublicUser } from "../../../shared/types";
 import * as api from "../api";
 import localNoteStorage from "../localNoteStorage";
 import { remoteNoteStorage } from "../api";
 
 interface Props {
-  user: User | undefined;
+  user: PublicUser | undefined;
   type: "login" | "signUp";
 }
 
@@ -22,7 +22,7 @@ interface State {
   localNotesAreDirty: boolean;
 }
 
-const minPasswordLength = 4;
+const minPasswordLength = 10;
 
 class SignUpPage extends Component<Props, State> {
   constructor(props: Props) {
@@ -123,7 +123,7 @@ class SignUpPage extends Component<Props, State> {
         return username.length >= 1 && password.length >= minPasswordLength;
 
       case "login":
-        return username.length >= 1 && password.length >= minPasswordLength;
+        return username.length >= 1 && password.length >= 1;
     }
   }
 
@@ -146,7 +146,7 @@ class SignUpPage extends Component<Props, State> {
         {type === "signUp" ? (
           <p>
             Sign up for free cloud syncing of your notes and edit them on any
-            device!
+            device! Passwords must be at least {minPasswordLength} characters.
           </p>
         ) : null}
 

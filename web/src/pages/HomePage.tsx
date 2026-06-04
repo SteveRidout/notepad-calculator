@@ -1,6 +1,6 @@
 import { Component, h } from "preact";
 
-import { Note, User } from "../../../shared/types";
+import { Note, PublicUser } from "../../../shared/types";
 import style from "../styles/HomePage.module.scss";
 import localNoteStorage from "../localNoteStorage";
 import { remoteNoteStorage } from "../api";
@@ -13,7 +13,7 @@ import * as legacyLocalStorage from "../legacyLocalStorage";
 import * as calculate from "../calculate";
 
 interface Props {
-  user: User | undefined;
+  user: PublicUser | undefined;
   noteId?: string;
   isMobile: boolean;
 }

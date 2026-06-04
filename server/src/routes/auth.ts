@@ -7,15 +7,18 @@ import * as auth from "../baseLib/auth";
 
 const router = express.Router();
 
-router.post<"/user", {}, PostUserResponse, PostUserRequest>(
+router.post<"/user", {}, PostUserResponse | string, PostUserRequest>(
   "/user",
   express.json(),
   async (req, res) => {
     const { username, password } = req.body;
-    const addUserReturnValue /*: PostUserResponse*/ = await auth.addUser(
-      username,
-      password
-    );
+    const passwordError = auth.validatePassword(password);
+    if (passwordError) {
+      res.status(400).send(passwordError);
+      return;
+    }
+
+    const addUserReturnValue = await auth.addUser(username, password);
 
     switch (addUserReturnValue.type) {
       case "user-already-exists":

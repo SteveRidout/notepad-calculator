@@ -17,3 +17,31 @@
     position: relative;
   }
 }
+
+.security-notice {
+  display: flex;
+  gap: $unit;
+  align-items: flex-start;
+  justify-content: space-between;
+  flex: 0 0 auto;
+  margin: 0 $unit $unit $unit;
+  padding: 10px 12px;
+  border: 1px solid #b45309;
+  background-color: #fff7ed;
+  color: #3f1f00;
+  line-height: 1.4;
+
+  a {
+    color: #7c2d12;
+    font-weight: 700;
+  }
+
+  button {
+    flex: 0 0 auto;
+    border: 1px solid #b45309;
+    background: #fff;
+    color: #3f1f00;
+    padding: 3px 8px;
+    cursor: pointer;
+  }
+}

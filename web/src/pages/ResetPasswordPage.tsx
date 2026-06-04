@@ -8,6 +8,8 @@ interface Props {
   resetCode?: string;
 }
 
+const minPasswordLength = 10;
+
 const ResetPasswordPage: FunctionalComponent<Props> = ({ resetCode }) => {
   const [username, setUsername] = useState<undefined | string>();
   const [errorMessage, setErrorMessage] = useState<undefined | string>();
@@ -74,8 +76,10 @@ const ResetPasswordPage: FunctionalComponent<Props> = ({ resetCode }) => {
             <td>
               <button
                 onClick={async () => {
-                  if (password1.length < 6) {
-                    alert("Your password must have at least 6 characters");
+                  if (password1.length < minPasswordLength) {
+                    alert(
+                      `Your password must have at least ${minPasswordLength} characters`
+                    );
                     return;
                   }
                   if (password1 !== password2) {

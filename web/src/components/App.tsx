@@ -1,13 +1,15 @@
 import { Component, h } from "preact";
+import { useState } from "preact/hooks";
 import { Router } from "preact-router";
 
-import { User } from "../../../shared/types";
+import { PublicUser } from "../../../shared/types";
 
 import AboutPage from "../pages/AboutPage";
 import AuthPage from "../pages/AuthPage";
 import HomePage from "../pages/HomePage";
 import NotFoundPage from "../pages/NotFoundPage";
 import ResetPasswordPage from "../pages/ResetPasswordPage";
+import SecurityPage from "../pages/SecurityPage";
 import Redirect from "./Redirect";
 import NavBar from "./NavBar";
 import * as api from "../api";
@@ -18,7 +20,7 @@ import * as localSettings from "../localSettings";
 interface Props {}
 
 interface State {
-  user: User | undefined;
+  user: PublicUser | undefined;
   loading: boolean;
   windowWidth: number;
 }
@@ -37,7 +39,7 @@ class App extends Component<Props, State> {
   }
 
   async fetchUser() {
-    let user: User | undefined;
+    let user: PublicUser | undefined;
 
     try {
       user = (await api.getUser()).user;
@@ -83,12 +85,14 @@ class App extends Component<Props, State> {
           ].join(" ")}
         >
           <NavBar user={user} isMobile={isMobile} />
+          <SecurityNotice />
           <Router>
             <HomePage path="/" user={user} isMobile={isMobile} />
             <Redirect path="/notes/:noteId" to="/" />
             <AuthPage path="/login" user={user} type="login" key="login" />
             <AuthPage path="/signUp" user={user} type="signUp" key="signUp" />
             <AboutPage path="/about" user={user} />
+            <SecurityPage path="/security" />
             <NotFoundPage path="/:catchAll" />
             <ResetPasswordPage path="/resetPassword/:resetCode" />
           </Router>
@@ -104,12 +108,14 @@ class App extends Component<Props, State> {
         ].join(" ")}
       >
         <NavBar user={user} isMobile={isMobile} />
+        <SecurityNotice />
         <Router>
           <HomePage path="/" user={user} isMobile={isMobile} />
           <HomePage path="/notes/:noteId" user={user} isMobile={isMobile} />
           <AuthPage path="/login" user={user} type="login" key="login" />
           <AuthPage path="/signUp" user={user} type="signUp" key="signUp" />
           <AboutPage path="/about" user={user} />
+          <SecurityPage path="/security" />
           <NotFoundPage path="/:catchAll" />
           <ResetPasswordPage path="/resetPassword/:resetCode" />
         </Router>
@@ -129,5 +135,35 @@ class App extends Component<Props, State> {
     window.removeEventListener("resize", this.onWindowResize);
   }
 }
+
+const securityNoticeDismissedKey = "securityNoticeDismissed20260604";
+
+const SecurityNotice = () => {
+  const [dismissed, setDismissed] = useState(
+    localStorage[securityNoticeDismissedKey] === "true"
+  );
+
+  if (dismissed || location.pathname === "/security") {
+    return null;
+  }
+
+  return (
+    <div className={style["security-notice"]}>
+      <div>
+        <strong>Important security notice:</strong> User notes may have been
+        accessed or modified in a recent incident.{" "}
+        <a href="/security">Read what happened and what to do.</a>
+      </div>
+      <button
+        onClick={() => {
+          localStorage[securityNoticeDismissedKey] = "true";
+          setDismissed(true);
+        }}
+      >
+        Dismiss
+      </button>
+    </div>
+  );
+};
 
 export default App;

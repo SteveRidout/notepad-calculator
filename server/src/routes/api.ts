@@ -31,8 +31,17 @@ router.get("/user", isAuthenticated, async (req, res) => {
   }
 
   const user = await userDAL.getUser({ id: req.user.id });
+  if (!user) {
+    res.status(404).send("User not found");
+    return;
+  }
+
   res.json({
-    user,
+    user: {
+      id: user.id,
+      username: user.username,
+      creationTime: user.creationTime,
+    },
   });
 });
 
@@ -57,8 +66,9 @@ router.post<{}, {}, apiTypes.UpdatePasswordRequest>(
       return;
     }
 
-    if (req.body.newPassword.length < 6) {
-      res.status(400).send("New password is too short");
+    const passwordError = auth.validatePassword(req.body.newPassword);
+    if (passwordError) {
+      res.status(400).send(passwordError);
       return;
     }
 

@@ -6,6 +6,9 @@ import * as apiTypes from "../../../shared/apiTypes";
 
 import * as userDAL from "../dal/userDAL";
 
+export const minPasswordLength = 10;
+const maxPasswordLength = 200;
+
 export const auth = () => {
   passport.serializeUser((user, done) => done(null, user));
   passport.deserializeUser((user: any, done) => done(null, user));
@@ -36,8 +39,9 @@ export const addUser = async (
   username: string,
   password: string
 ): Promise<apiTypes.PostUserResponse> => {
-  if (password.length < 4) {
-    throw Error("Invalid password");
+  const passwordError = validatePassword(password);
+  if (passwordError) {
+    throw Error(passwordError);
   }
 
   const hashedPassword = await createPasswordHash(password);
@@ -47,6 +51,20 @@ export const addUser = async (
     hashedPassword,
     creationTime: new Date(),
   });
+};
+
+export const validatePassword = (password: string): string | undefined => {
+  if (password.length < minPasswordLength) {
+    return `Password must be at least ${minPasswordLength} characters`;
+  }
+
+  if (password.length > maxPasswordLength) {
+    return `Password must be ${maxPasswordLength} characters or fewer`;
+  }
+
+  if (password.trim().length === 0) {
+    return "Password cannot be blank";
+  }
 };
 
 /** Create salted password hash. */

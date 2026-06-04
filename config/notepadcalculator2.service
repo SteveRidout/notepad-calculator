@@ -12,6 +12,7 @@ User=steve
 WorkingDirectory=/var/www/notepadcalculator2/server
 ExecStart=/home/steve/.nodenv/shims/node dist/serverBundle.js
 Restart=on-failure
+RestartSec=10s
 StandardOutput=append:/var/www/notepadcalculator2/server-stdout.log
 StandardError=append:/var/www/notepadcalculator2/server-stderr.log
 

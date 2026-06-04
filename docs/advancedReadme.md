@@ -196,5 +196,3 @@ insert into reset_password (code, user_id) values ('xxxxxxx', $USER_ID);
 ```
 
 Their reset URL will then be `https://notepadcalculator.com/resetPassword/xxxxxxx`
-
-sudo cat /var/log/nginx/access.log.1 /var/log/nginx/access.log | grep https://notepadcalculator.com | goaccess --log-format=COMBINED --ignore-crawlers

@@ -120,6 +120,7 @@ ssh steve@app-1
 # Run npm install
 cd /var/www/notepadcalculator2/server
 npm install
+npx knex migrate:latest --env production
 
 sudo systemctl restart notepadcalculator2.service
 ```
@@ -141,6 +142,10 @@ Needs to be done locally and in production
 cd server
 npm install
 npx knex migrate:latest
+
+# In production, from the app server:
+# Ensure the app's DB_* environment variables are loaded first.
+npx knex migrate:latest --env production
 ```
 
 ## Style issues
@@ -196,3 +201,18 @@ insert into reset_password (code, user_id, creation_time) values ('xxxxxxx', $US
 ```
 
 Their reset URL will then be `https://notepadcalculator.com/resetPassword/xxxxxxx`
+
+If this errors because `reset_password.creation_time` does not exist, the latest
+database migration has not been run against that database. Prefer running:
+
+```sh
+cd server
+npx knex migrate:latest --env production
+```
+
+If already connected in `psql` and you need to unblock the reset immediately,
+this is the equivalent schema change:
+
+```sql
+alter table reset_password add column creation_time timestamp;
+```

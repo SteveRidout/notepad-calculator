@@ -8,8 +8,10 @@ if [ ! -f "../.productionEnvVars" ]; then
     echo ""
     echo "  DB_NAME=your_database_name"
     echo "  DB_HOST=your_database_host"
+    echo "  DB_PORT=your_database_port"
     echo "  DB_PASSWORD=your_database_password"
     echo "  DB_USER=your_database_user"
+    echo "  SESSION_KEYS=your_cookie_session_secret"
     echo ""
     echo "At minimum, DB_HOST and DB_PASSWORD must be provided."
     exit 1
@@ -17,7 +19,7 @@ fi
 
 # Create a temporary copy of the service file
 TMP_SERVICE_FILE="/tmp/notepadcalculator2.service.tmp"
-cp notepadCalculator2.service "$TMP_SERVICE_FILE"
+cp notepadcalculator2.service "$TMP_SERVICE_FILE"
 
 # Read environment variables from .productionEnvVars and inject them into the service file
 ENV_LINES=""
@@ -53,13 +55,13 @@ if [ -n "$ENV_LINES" ]; then
 fi
 
 # Copy the modified service file to the server
-scp "$TMP_SERVICE_FILE" steve@app-1:/lib/systemd/system/notepadcalculator2.service
+scp "$TMP_SERVICE_FILE" steve@app-1:/etc/systemd/system/notepadcalculator2.service
 
 # Clean up the temporary file
 rm "$TMP_SERVICE_FILE"
 
 # Copy nginx config as before
-scp notepadCalculator2-nginx.conf steve@app-1:/etc/nginx/sites-enabled/notepadcalculator2.conf
+scp notepadcalculator2-nginx.conf steve@app-1:/etc/nginx/sites-enabled/notepadcalculator2.conf
 
 echo "Remember to restart nginx and notepadcalculator2 services on the server:"
 echo ""

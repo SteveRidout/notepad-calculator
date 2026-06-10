@@ -183,7 +183,14 @@ If someone emails, here's the response:
 Please let me know your username and the title of one or two of your notes and I can generate a password reset link for you.
 ```
 
-Here's how to generate a reset link
+The easy way to generate a reset link is to run this locally, which does all
+of the below for you and prints an email body to send back:
+
+```sh
+./server/scripts/resetPassword.sh <username-or-user-id>
+```
+
+Or to do it manually:
 
 ```sh
 ssh steve@app-1

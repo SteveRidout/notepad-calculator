@@ -1,5 +1,4 @@
 import { Component, h } from "preact";
-import { useState } from "preact/hooks";
 import { Router } from "preact-router";
 
 import { PublicUser } from "../../../shared/types";
@@ -86,7 +85,6 @@ class App extends Component<Props, State> {
           ].join(" ")}
         >
           <NavBar user={user} isMobile={isMobile} />
-          <SecurityNotice />
           <Router>
             <HomePage path="/" user={user} isMobile={isMobile} />
             <Redirect path="/notes/:noteId" to="/" />
@@ -110,7 +108,6 @@ class App extends Component<Props, State> {
         ].join(" ")}
       >
         <NavBar user={user} isMobile={isMobile} />
-        <SecurityNotice />
         <Router>
           <HomePage path="/" user={user} isMobile={isMobile} />
           <HomePage path="/notes/:noteId" user={user} isMobile={isMobile} />
@@ -138,35 +135,5 @@ class App extends Component<Props, State> {
     window.removeEventListener("resize", this.onWindowResize);
   }
 }
-
-const securityNoticeDismissedKey = "securityNoticeDismissed20260604";
-
-const SecurityNotice = () => {
-  const [dismissed, setDismissed] = useState(
-    localStorage[securityNoticeDismissedKey] === "true"
-  );
-
-  if (dismissed || location.pathname === "/security") {
-    return null;
-  }
-
-  return (
-    <div className={style["security-notice"]}>
-      <div>
-        <strong>Important security notice:</strong> User notes may have been
-        accessed or modified in a recent incident.{" "}
-        <a href="/security">Read what happened and what to do.</a>
-      </div>
-      <button
-        onClick={() => {
-          localStorage[securityNoticeDismissedKey] = "true";
-          setDismissed(true);
-        }}
-      >
-        Dismiss
-      </button>
-    </div>
-  );
-};
 
 export default App;
